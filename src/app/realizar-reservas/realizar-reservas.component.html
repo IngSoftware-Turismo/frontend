@@ -45,8 +45,8 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" id="paquete">Seleccionar paquete:</label>
                <div class="col-sm-8">
-                  <select readonly class="form-control-plaintext" id="paquete">
-                    <option>TORO ROTO</option>
+                  <select readonly class="form-control-plaintext" formControlName ="paquete" >
+                    <option *ngFor= 'let categoria of categorias' > {{ categoria.nombre }}</option>
                   </select>
                </div>
                 
@@ -56,7 +56,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label" id="pago">Seleccionar forma <br>de pago:</label>
                     <div class="col-sm-8">
-                        <select readonly class="form-control-plaintext" id="pago">
+                        <select readonly class="form-control-plaintext" formControlName="metodoPago">
                             <option>EFECTIVO</option>
                         </select>
                     </div>
