@@ -19,7 +19,7 @@ import { RealizarReservasComponent } from './realizar-reservas/realizar-reservas
       AppComponent,
       ListarReservasComponent,
       NavBarComponent,
-      RealizarReservasComponent
+      RealizarReservasComponent,
    ],
    imports: [
       BrowserModule,

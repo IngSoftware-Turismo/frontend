@@ -1,0 +1,34 @@
+.reserva{
+    border: 1px solid #dee2e6;
+    padding: 3%;
+    margin-bottom: 5%;
+}
+.reserva h1{
+    text-align: center;
+    margin: 4%;
+}
+.reserva p{
+    width: 100%;
+    font-weight: 600;
+}
+
+.reserva input{
+    border: 1px solid #dee2e6;
+    width: 100%;
+    padding: 5px;
+}
+.reserva select{
+    border: 1px solid #dee2e6;
+}
+.espacio-sup{
+    padding-top: 12px;
+}
+.espacio-titulo{
+    padding: 3% 0% 0%;  
+}
+ .botones{
+   margin-top: 5%;
+}
+button.btn.btn-danger{
+   margin-left: 28%;
+}
