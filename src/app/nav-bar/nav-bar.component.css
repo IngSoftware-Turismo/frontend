@@ -1,0 +1,17 @@
+a.nabvar-brand{
+    color: #fff;
+}
+a.nav-link{
+    color: #fff;
+    background: #009933;
+    margin-right: 1px;
+    border-radius: 4px;
+}
+a.nav-link:hover{
+    background: #009933b3;
+}
+.bg-blue{
+   /* background-color: #0066cc;*/
+  background-color: #2855a7;
+
+}
