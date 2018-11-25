@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Turista } from '../shared/models/turista';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Categoria} from '../shared/models/categoria';
 import { Paquete } from '../shared/models/paquete';
 import {CategoriaService} from '../services/categoria.service';
@@ -16,28 +16,35 @@ export class RealizarReservasComponent implements OnInit {
   metodoPago: String;
   reservaForm: FormGroup;
   categorias: Categoria [];
+  subido = false;
 
-  constructor(private fb: FormBuilder,private categoriaServicio: CategoriaService) { }
+
+  constructor(private fb: FormBuilder, private categoriaServicio: CategoriaService) { }
 
   ngOnInit() {
     this.getCategorias();
     this.reservaForm = this.fb.group({
-      nombre: [''],
-      ci: [''],
-      correo: [''],
-     apellidos: [''],
-     telefono: [''],
-     paquete: [''],
-     metodoPago: ['']
+      nombre: ['', Validators.required],
+      ci: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(6)]],
+      correo: ['', [Validators.required, Validators.email]],
+      apellidos: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(6)]],
+      paquete: ['' ],
+      metodoPago: ['' ]
     });
-    
   }
+  get f() { return this.reservaForm.controls; }
+
   onSubmit(): void {
     this.turista.nombre = this.reservaForm.get('nombre').value;
-    alert(this.turista.nombre);
-    console.log(this.turista.nombre);
+    // alert(this.turista.nombre);
+    // console.log(this.turista.nombre);
   }
-  guardar(): void{
+  guardar(): void {
+    this.subido = true;
+    if (this.reservaForm.invalid) {
+      return;
+    }
     this.turista.nombre = this.reservaForm.get('nombre').value;
     this.turista.ci = this.reservaForm.get('ci').value;
     this.turista.correo = this.reservaForm.get('correo').value;
@@ -45,8 +52,8 @@ export class RealizarReservasComponent implements OnInit {
     this.turista.telefono = this.reservaForm.get('telefono').value;
     this.paquete.nombre = this.reservaForm.get('paquete').value;
     this.metodoPago = this.reservaForm.get('metodoPago').value;
-    alert(this.metodoPago);
-    console.log(this.paquete.nombre);
+    // alert(this.metodoPago);
+    // console.log(this.paquete.nombre);
   }
   getCategorias(): void {
     this.categoriaServicio.getCategorias().subscribe(categorias => this.categorias = categorias);
