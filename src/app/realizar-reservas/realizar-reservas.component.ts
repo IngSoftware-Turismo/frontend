@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Categoria} from '../shared/models/categoria';
 import { Paquete } from '../shared/models/paquete';
 import {CategoriaService} from '../services/categoria.service';
+import { TuristaService } from '../services/turista.service';
 
 @Component({
   selector: 'app-realizar-reservas',
@@ -19,7 +20,7 @@ export class RealizarReservasComponent implements OnInit {
   subido = false;
 
 
-  constructor(private fb: FormBuilder, private categoriaServicio: CategoriaService) { }
+  constructor(private fb: FormBuilder, private categoriaServicio: CategoriaService, private turistaServicio: TuristaService) { }
 
   ngOnInit() {
     this.getCategorias();
@@ -55,7 +56,18 @@ export class RealizarReservasComponent implements OnInit {
     // alert(this.metodoPago);
     // console.log(this.paquete.nombre);
   }
+  getTurista(ci:number): void
+  {
+    let tempo;
+    this.turistaServicio.getTurista(ci).subscribe(turista => tempo = turista);
+    if( tempo === null){
+      this.postTurista(this.turista)
+    }
+  }
+  postTurista(turista: Turista): void{
+    
+  }
   getCategorias(): void {
     this.categoriaServicio.getCategorias().subscribe(categorias => this.categorias = categorias);
-     }
+  }
 }
