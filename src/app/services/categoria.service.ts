@@ -11,8 +11,8 @@ export class CategoriaService {
 
 constructor(private http: HttpClient ) { }
 
-getCategorias(): Observable <Categoria[]> {
-  // return of (CATEGORIAS);
-  return this.http.get<Categoria[]>('http://turismo.getsandbox.com/categorias');
-}
+  getCategorias(): Observable <Categoria[]> {
+    // return of (CATEGORIAS);
+    return this.http.get<Categoria[]>('http://turismo.getsandbox.com/categorias');
+  }
 }
