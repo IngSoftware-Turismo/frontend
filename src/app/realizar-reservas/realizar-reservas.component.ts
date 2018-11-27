@@ -1,30 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Turista } from '../shared/models/turista';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Categoria } from '../shared/models/categoria';
 import { Paquete } from '../shared/models/paquete';
 import { CategoriaService } from '../services/categoria.service';
 import { TuristaService } from '../services/turista.service';
 import { Observer } from 'rxjs';
+import { Reserva } from '../shared/models/reserva';
+import { PaqueteService } from '../services/paquete.service';
+import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
+import { ReservaService } from '../services/reserva.service';
 @Component({
   selector: 'app-realizar-reservas',
   templateUrl: './realizar-reservas.component.html',
   styleUrls: ['./realizar-reservas.component.css']
 })
 export class RealizarReservasComponent implements OnInit {
-  turista: Turista ;
-  paquete: Paquete ;
-  metodoPago: String;
+  turista: Turista = new Turista() ;
+  paquete: Paquete = new Paquete();
+  metodoPago: string;
   reservaForm: FormGroup;
-  categorias: Categoria [];
   subido = false;
   turista2: Turista ;
+  reserva: Reserva = new Reserva();
+  paquetes: Paquete [];
 
 
-  constructor(private fb: FormBuilder, private categoriaServicio: CategoriaService, private turistaServicio: TuristaService) { }
+  constructor(private fb: FormBuilder, private categoriaServicio: CategoriaService,
+              private turistaServicio: TuristaService, private paqueteServicio: PaqueteService,
+              private reservaServicio: ReservaService) { }
 
   ngOnInit() {
-    this.getCategorias();
+    this.getPaquetes();
     this.reservaForm = this.fb.group({
       nombre: ['', Validators.required],
       ci: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(6)]],
@@ -47,7 +54,6 @@ export class RealizarReservasComponent implements OnInit {
     if (this.reservaForm.invalid) {
       return;
     }
-    console.log('rekt');
     this.turista.nombre = this.reservaForm.get('nombre').value;
     this.turista.ci = this.reservaForm.get('ci').value;
     this.turista.correo = this.reservaForm.get('correo').value;
@@ -55,39 +61,61 @@ export class RealizarReservasComponent implements OnInit {
     this.turista.telefono = this.reservaForm.get('telefono').value;
     this.paquete.nombre = this.reservaForm.get('paquete').value;
     this.metodoPago = this.reservaForm.get('metodoPago').value;
-
     this.getTurista(this.turista.ci);
   }
   getTurista(ci: number): void {
     let tempo = new Turista();
-    let categoria = new Categoria();
     const observador: Observer<Turista> = {
       next: (data) => {
-        console.log(data);
         tempo = data;
         if (tempo.nombre == null) {
           this.postTurista(this.turista);
           console.log('postear');
         }
-        const obs2: Observer<Categoria> = {
-          next: (data) => {
-            console.log(data);
-            categoria = data;
-
-
-        }
-      };
+        console.log(this.paquete.nombre);
+        this.paquete = this.paquetes.filter(paquete => paquete.nombre === this.paquete.nombre)[0];
+        const utc = new Date().toJSON().slice(0, 10);
+        this.reserva.fecha = utc;
+        this.reserva.turista = this.turista;
+        this.reserva.paquete = this.paquete;
+        this.reserva.estadoPago = 'No pagado';
+        this.reserva.eliminado = false;
+        this.reserva.metodoPago = this.metodoPago;
+        console.log(this.reserva);
+        this.reservaServicio.reservar(this.reserva);
+        alert('Reserva realizada exitosamente');
+        this.reset();
+      },
+         error: (error) => {
+        console.log(error);
+        console.log('se produjo el siguiente error al recuperar un paquete');
+      },
+      complete: () => {
+        console.log('proceso finalizado');
       }
     };
 
     this.turistaServicio.getTurista(ci).subscribe(observador);
-    this.categoriaServicio.get
-
-  }
+    }
   postTurista(turista: Turista): void {
     this.turistaServicio.postTurista(turista);
   }
-  getCategorias(): void {
-    this.categoriaServicio.getCategorias().subscribe(categorias => this.categorias = categorias);
+  getPaquetes(): void {
+    this.paqueteServicio.getPaquetes().subscribe(paquetes => this.paquetes = paquetes);
   }
+  reset(): void{
+    this.reservaForm.reset();
+    this.validateAllFields(this.reservaForm);
+  }
+  validateAllFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFields(control);
+      }
+    });
+  }
+
 }

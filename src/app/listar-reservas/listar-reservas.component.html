@@ -1,73 +1,77 @@
 <div class="container reserva">
-  <h1>REALIZAR RESERVA</h1>
-  <form class="form-inline"> 
-    
+    <h1>LISTA RESERVAS</h1>
+    <form class="form-inline">
         <div class="row">
-            <p>INFORMACION PERSONAL</p>
-            <div class="col-lg-6">
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label" id="nombre">Nombre:</label>
-                <div class="col-sm-8">
-                    <input type="text" id="nombre">
-                </div>
-                
-            </div>
-            <div class="form-group row espacio-sup">
-                <label class="col-sm-4 col-form-label" id="ci">Ci:</label>
-                <div class="col-sm-8">
-                    <input type="text" id="ci">
-                    </div>
-            </div>
-            <div class="form-group row espacio-sup">
-                <label class="col-sm-4 col-form-label" id="correo">Correo:</label>
-                <div class="col-sm-8">
-                    <input type="text" id="correo">
-                    </div>
-            </div>
-            </div>
             <div class="col-lg-6">
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label" id="apellidos">Apellidos:</label>
+                    <label class="col-sm-4 col-form-label" id="categoria">Categoria:</label>
                     <div class="col-sm-8">
-                        <input type="text" id="apellidos">
-                    </div>
-                </div>
-                <div class="form-group row espacio-sup">
-                    <label class="col-sm-4 col-form-label" id="telefono">Teléfono:</label>
-                    <div class="col-sm-8">
-                        <input type="text" id="telefono">
-                    </div>
-                </div>
-            </div>
-            <p class="espacio-titulo">INFORMACION DE PAQUEDE</p>
-
-            <div class="col-lg-6 ">
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label" id="paquete">Seleccionar paquete:</label>
-               <div class="col-sm-8">
-                  <select readonly class="form-control-plaintext" id="paquete">
-                    <option>TORO ROTO</option>
-                  </select>
-               </div>
-                
-            </div>
-            </div>
-            <div class="col-lg-6 ">
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label" id="pago">Seleccionar forma <br>de pago:</label>
-                    <div class="col-sm-8">
-                        <select readonly class="form-control-plaintext" id="pago">
-                            <option>EFECTIVO</option>
+                        <select type="text" readonly class="form-control-plaintext" id="categoria" (change)="onChange($event.target.value)">
+                            <option *ngFor='let categoria of categorias'>{{categoria.nombre}}</option>
                         </select>
                     </div>
                 </div>
+                <div class="form-group row espacio-sup">
+                    <label class="col-sm-4 col-form-label">Cupo mínimo:</label>
+                    <div class="col-sm-8">
+                        <input type="text" placeholder="" [(ngModel)]="paquete.cupoMinimo" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
             </div>
-            
-            <div class="col-md-7 offset-md-4 botones">
-                <button class="btn btn-success btn-lg" type="button">Guardar</button>
-                <button class="btn btn-danger btn-lg" type="button">Cancelar</button>
+            <div class="col-lg-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" id="PAQ">Paquete turistico:</label>
+                    <div class="col-sm-8">
+                        <select type="text" readonly class="form-control-plaintext" id="PAQ" (change)="cambioPaquete($event.target.value)">
+                            <option *ngFor='let paquete of paquetes'> {{paquete.nombre}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row espacio-sup">
+                    <label class="col-sm-4 col-form-label">Cantidad de reservas:</label>
+                    <div class="col-sm-8">
+                        <input  type="text" placeholder="" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="cupo">
+                    <div class="alert alert-success" role="alert">
+                        Cupo minimo cubierto <span> </span><i class="fas fa-grin-alt fa-lg"></i>
+                    </div>
+                    <!--Cuando el cupo no sea cubierto es decir, la cantidad de reservas existentes sea menor al cupo:-->
+                    <!--<div class="alert alert-danger" role="alert">
+            Cupo minimo No cubierto <span>  </span><i class="fas fa-tired fa-lg"></i>
+          </div>-->
+                </div>
+            </div>
+            <div class="col-m-8 offset-md-2">
+                <table class="table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cantidad de personas</th>
+                            <th>Nombre Completo</th>
+                            <th>Telefono</th>
+                            <th>Estado de pago</th>
+                            <th>Eliminar reserva</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reserva of reservas">
+                            <td>{{reserva.fecha | date:'MM/dd/yyy'}}</td>
+                            <td>1</td>
+                            <td>{{reserva.turista.nombre}}</td>
+                            <td>{{reserva.turista.telefono}}</td>
+                            <td>{{reserva.estadoPago}}</td>
+                            <td>
+                                <a href=""> <i class="fas fa-trash-alt fa-lg"></i></a>
+                    
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-          
-  </form>
+    </form>
 </div>

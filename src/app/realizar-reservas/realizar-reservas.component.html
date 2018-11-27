@@ -66,7 +66,7 @@
                 <label class="col-sm-4 col-form-label" id="paquete">Seleccionar paquete:</label>
                <div class="col-sm-8">
                   <select readonly class="form-control-plaintext" formControlName ="paquete" >
-                    <option *ngFor= 'let categoria of categorias' > {{ categoria.nombre }}</option>
+                    <option *ngFor= 'let paquete of paquetes' > {{ paquete.nombre }}</option>
                   </select>
                </div>
                 
@@ -85,7 +85,7 @@
             
             <div class="col-md-7 offset-md-4 botones">
                 <button class="btn btn-success btn-lg" type="button" (click)="guardar()">Guardar</button>
-                <button class="btn btn-danger btn-lg" type="button">Cancelar</button>
+                <button class="btn btn-danger btn-lg" type="button" (click)="reset()">Cancelar</button>
             </div>
         </div>
           

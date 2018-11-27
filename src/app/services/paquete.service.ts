@@ -4,14 +4,20 @@ import { Observable } from 'rxjs';
 import { Paquete } from '../shared/models/paquete';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class PaqueteService {
-  constructor(private http:HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  getCategoria(nombre: string): Observable<Paquete> {
+  getPaquete(nombre: string): Observable<Paquete> {
     return this.http.get<Paquete>(
-      "http://turismo.getsandbox.com/getPaquete/".concat(nombre)
+      'http://turismo.getsandbox.com/paquetes/'.concat(nombre)
     );
+  }
+  getPaquetesTodos(id: number): Observable<Paquete[]> {
+    return this.http.get<Paquete[]>('http://localhost:8080/paquete/getPaquetes/?id_categoria='.concat(String(id)));
+  }
+  getPaquetes(): Observable<Paquete[]> {
+    return this.http.get<Paquete[]>('http://turismo.getsandbox.com/paquetes');
   }
 }
