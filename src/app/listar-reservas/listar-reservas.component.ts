@@ -17,7 +17,7 @@ export class ListarReservasComponent implements OnInit {
   categoria: Categoria;
   paquetes: Paquete[];
   paquete: Paquete = new Paquete();
-
+  cantidadReservas: number;
   reservas: Reserva[];
   constructor(private categoriaServicio: CategoriaService, private paqueteServicio: PaqueteService,
               private reservaServicio: ReservaService) { }
@@ -33,6 +33,7 @@ export class ListarReservasComponent implements OnInit {
     this.categoria = this.categorias.filter(categoria => categoria.nombre === nombreCategoria)[0];
 
     this.getPaquetes(this.categoria.id);
+
   }
   getPaquetes(id: number): void {
     const observador: Observer<Paquete[]> = {
@@ -58,8 +59,8 @@ export class ListarReservasComponent implements OnInit {
     const observador: Observer<Reserva[]> = {
       next: (data) => {
         this.reservas = data;
-        console.log(this.reservas);
-
+        console.log(this.reservas.length + ' reservassssssssssssssssssssssssss');
+        this.cantidadReservas = this.reservas.length;
 
       },
       error: (error) => {

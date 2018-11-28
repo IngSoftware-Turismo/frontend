@@ -30,19 +30,21 @@
                 <div class="form-group row espacio-sup">
                     <label class="col-sm-4 col-form-label">Cantidad de reservas:</label>
                     <div class="col-sm-8">
-                        <input  type="text" placeholder="" >
+                        <input  type="text" placeholder="" [(ngModel)]="cantidadReservas" [ngModelOptions]="{standalone: true}" >
                     </div>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="cupo">
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success" role="alert" *ngIf="cantidadReservas>= paquete.cupoMinimo; else insuficiente">
                         Cupo minimo cubierto <span> </span><i class="fas fa-grin-alt fa-lg"></i>
                     </div>
-                    <!--Cuando el cupo no sea cubierto es decir, la cantidad de reservas existentes sea menor al cupo:-->
-                    <!--<div class="alert alert-danger" role="alert">
-            Cupo minimo No cubierto <span>  </span><i class="fas fa-tired fa-lg"></i>
-          </div>-->
+                    <!-- Cuando el cupo no sea cubierto es decir, la cantidad de reservas existentes sea menor al cupo: -->
+                    <ng-template #insuficiente>
+                        <div class="alert alert-danger" role="alert" *ngIf="cantidadReservas< paquete.cupoMinimo">
+                            Cupo minimo No cubierto <span>  </span><i class="fas fa-tired fa-lg"></i>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
             <div class="col-m-8 offset-md-2">

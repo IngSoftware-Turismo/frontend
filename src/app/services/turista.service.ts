@@ -15,14 +15,14 @@ export class TuristaService {
   constructor(private http: HttpClient) {}
 
   getTurista(ci: number): Observable<Turista> {
-    this.url = 'http://turismo.getsandbox.com/getTurista/'.concat(String(ci));
+    this.url = 'http://localhost:8080/turista/getTurista/?ci='.concat(String(ci));
 
     console.log(this.url);
     return this.http.get<Turista>(this.url);
   }
   postTurista(nuevoTurista) {
     this.http
-      .post('http://turismo.getsandbox.com/turista', nuevoTurista)
+      .post('http://localhost:8080/turista/post', nuevoTurista)
       .subscribe(
         data => {
           console.log('okk', data);

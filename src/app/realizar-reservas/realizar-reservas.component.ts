@@ -68,20 +68,30 @@ export class RealizarReservasComponent implements OnInit {
     const observador: Observer<Turista> = {
       next: (data) => {
         tempo = data;
-        if (tempo.nombre == null) {
+        if (tempo === null) {
           this.postTurista(this.turista);
           console.log('postear');
+          this.reserva.turista = this.turista;
+        } else {
+          this.reserva.turista = tempo;
+
         }
-        console.log(this.paquete.nombre);
-        this.paquete = this.paquetes.filter(paquete => paquete.nombre === this.paquete.nombre)[0];
+
+        this.paquete = this.paquetes.filter(paquete => paquete.nombre.trim() === this.paquete.nombre.trim())[0];
+        console.log('imprimiendo paquete');
+        console.log(this.paquetes);
+        console.log(this.paquete);
+        const paqueteFix = new Paquete();
+        paqueteFix.id = this.paquete.id;
+        paqueteFix.categoria = this.paquete.categoria;
+        paqueteFix.nombre = this.paquete.nombre;
+        paqueteFix.cupoMinimo = this.paquete.cupoMinimo;
         const utc = new Date().toJSON().slice(0, 10);
         this.reserva.fecha = utc;
-        this.reserva.turista = this.turista;
-        this.reserva.paquete = this.paquete;
+        this.reserva.paquete = paqueteFix;
         this.reserva.estadoPago = 'No pagado';
         this.reserva.eliminado = false;
         this.reserva.metodoPago = this.metodoPago;
-        console.log(this.reserva);
         this.reservaServicio.reservar(this.reserva);
         alert('Reserva realizada exitosamente');
         this.reset();
@@ -98,12 +108,13 @@ export class RealizarReservasComponent implements OnInit {
     this.turistaServicio.getTurista(ci).subscribe(observador);
     }
   postTurista(turista: Turista): void {
+    console.log(turista);
     this.turistaServicio.postTurista(turista);
   }
   getPaquetes(): void {
     this.paqueteServicio.getPaquetes().subscribe(paquetes => this.paquetes = paquetes);
   }
-  reset(): void{
+  reset(): void {
     this.reservaForm.reset();
     this.validateAllFields(this.reservaForm);
   }

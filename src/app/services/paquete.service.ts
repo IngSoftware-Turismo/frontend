@@ -18,6 +18,7 @@ export class PaqueteService {
     return this.http.get<Paquete[]>('http://localhost:8080/paquete/getPaquetes/?id_categoria='.concat(String(id)));
   }
   getPaquetes(): Observable<Paquete[]> {
-    return this.http.get<Paquete[]>('http://turismo.getsandbox.com/paquetes');
+    // return this.http.get<Paquete[]>('http://turismo.getsandbox.com/paquetes');
+    return this.http.get<Paquete[]>('http://localhost:8080/paquete/get');
   }
 }
